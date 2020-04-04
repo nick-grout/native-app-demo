@@ -1,0 +1,26 @@
+# todo lists
+*.todo
+
+# QA and test related files to ignore
+results/**
+.pabotsuitenames
+log*.html
+output*.xml
+report*.html
+*.png
+geckodriver.log
+node_modules
+package-lock.json
+jason*
+*.log
+
+# Python ignore
+__pycache__
+*.pyc
+
+# Other noise
+.DS_Store
+.vscode/
+.idea
+*.swp
+venv
