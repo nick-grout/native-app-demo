@@ -1,49 +1,34 @@
 """
 More involved iOS tests, using UICatalog application.
 """
-import time
-import os
+from appium.webdriver.webdriver import WebDriver
 import random
+import time
 import string
-from appium import webdriver
-import appium.webdriver.webdriver
-from appium.webdriver.common.touch_action import TouchAction
-from selenium.webdriver.common.touch_actions import TouchActions
-import urllib3.request as urllib2
-import json
-from time import sleep
 
 
-def test_create_project(driver: webdriver.webdriver.WebDriver):
-    try:
-        e = webdriver.find_element_by_xpath('//XCUIElementTypeApplication[@name="Blackout"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeCollectionView/XCUIElementTypeCell')
-        e.click()
-        webdriver.find_element_by_xpath('//*[contains(@name, "house")]').click()
-        webdriver.find_element_by_xpath('//*[contains(@name, "Effects")]').click()
-        webdriver.find_element_by_xpath('//XCUIElementTypeStaticText[@name="14"]').click()
-        webdriver.find_element_by_xpath('//XCUIElementTypeButton[@name="Update"]').click()
-        input('press enter...')
-    except Exception as e:
-        print('---> error: ', str(e))
-    finally:
-        d.save_screenshot('out.png')
-        d.quit()
+def random_characters(length: int = 5):
+    def random_character():
+        return random.choice(string.ascii_letters + string.digits)
+    return ''.join([random_character() for i in range(length)])
 
-class BlackoutAppTests(unittest.TestCase):
 
-    def setUp(self):
-        # set up appium
-        self.driver = init_driver()
-        self._values = []
+"""
+def test_access_project(driver: WebDriver):
+    e = driver.find_element_by_xpath('//XCUIElementTypeApplication[@name="Blackout"]/XCUIElementTypeWindow[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther[2]/XCUIElementTypeCollectionView/XCUIElementTypeCell')
+    e.click()
+    driver.find_element_by_xpath('//*[contains(@name, "house")]').click()
+    driver.find_element_by_xpath('//*[contains(@name, "Effects")]').click()
+    driver.find_element_by_xpath('//XCUIElementTypeStaticText[@name="14"]').click()
+    driver.find_element_by_xpath('//XCUIElementTypeButton[@name="Update"]').click()
+"""
 
-    def tearDown(self):
-        self.driver.quit()
 
-    def test_find_element(self):
-        element = self.driver.find_element_by_name('Fixture Controls')
-        element.click()
-
-if __name__ == "__main__":
-    #suite = unittest.TestLoader().loadTestsFromTestCase(BlackoutAppTests)
-    #unittest.TextTestRunner(verbosity=2).run(suite)
-    run_test()
+def test_create_project(driver: WebDriver):
+    driver.find_element_by_xpath('//XCUIElementTypeButton[@name="+ Create new"]').click()
+    test_project_name = 'test-project-' + random_characters()
+    driver.find_element_by_xpath('//XCUIElementTypeTextField').send_keys(test_project_name)
+    driver.find_element_by_xpath('//XCUIElementTypeButton[@name="Save"]').click()
+    time.sleep(2)
+    driver.find_element_by_xpath('//XCUIElementTypeStaticText[@name="{}"]'.format(test_project_name)).click()
+    time.sleep(2)

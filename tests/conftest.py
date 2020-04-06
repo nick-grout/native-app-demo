@@ -1,6 +1,7 @@
 import pytest
 from appium import webdriver
 
+
 def init_driver():
     # set up appium
     return webdriver.Remote(
@@ -15,9 +16,9 @@ def init_driver():
             "xcodeSigningId": "Nick Grout",
         })
 
-
 @pytest.fixture
 def driver():
     driver = init_driver()
-    yeild driver
+    driver.implicitly_wait(10)
+    yield driver
     driver.quit()
